@@ -1,13 +1,13 @@
-package com.atguigu.gmall.service.impl;
+package com.hyman.dubbo.service.impl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.atguigu.gmall.bean.UserAddress;
-import com.atguigu.gmall.service.OrderService;
-import com.atguigu.gmall.service.UserService;
+import com.hyman.dubbo.bean.UserAddress;
+import com.hyman.dubbo.service.OrderService;
+import com.hyman.dubbo.service.UserService;
 
 /**
  * 1、将服务提供者注册到注册中心（暴露服务）
@@ -23,7 +23,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	UserService userService;
-	@Override
+
 	public List<UserAddress> initOrder(String userId) {
 		// TODO Auto-generated method stub
 		System.out.println("用户id："+userId);

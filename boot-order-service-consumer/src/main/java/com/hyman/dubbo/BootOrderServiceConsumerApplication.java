@@ -1,4 +1,4 @@
-package com.atguigu.gmall;
+package com.hyman.dubbo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

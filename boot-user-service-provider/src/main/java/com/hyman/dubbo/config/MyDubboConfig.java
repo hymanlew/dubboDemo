@@ -1,4 +1,4 @@
-package com.atguigu.gmall.config;
+package com.hyman.dubbo.config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import com.alibaba.dubbo.config.ProtocolConfig;
 import com.alibaba.dubbo.config.ProviderConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
 import com.alibaba.dubbo.config.ServiceConfig;
-import com.atguigu.gmall.service.UserService;
+import com.hyman.dubbo.service.UserService;
 
 @Configuration
 public class MyDubboConfig {
@@ -44,7 +44,7 @@ public class MyDubboConfig {
 	}
 	
 	/**
-	 *<dubbo:service interface="com.atguigu.gmall.service.UserService" 
+	 *<dubbo:service interface="com.hyman.dubbo.service.UserService"
 		ref="userServiceImpl01" timeout="1000" version="1.0.0">
 		<dubbo:method name="getUserAddressList" timeout="1000"></dubbo:method>
 	</dubbo:service>

@@ -1,10 +1,10 @@
-package com.atguigu.gmall.service.impl;
+package com.hyman.dubbo.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
 
-import com.atguigu.gmall.bean.UserAddress;
-import com.atguigu.gmall.service.UserService;
+import com.hyman.dubbo.bean.UserAddress;
+import com.hyman.dubbo.service.UserService;
 
 public class UserServiceImpl2 implements UserService {
 

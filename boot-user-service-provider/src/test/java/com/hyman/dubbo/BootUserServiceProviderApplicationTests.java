@@ -1,4 +1,4 @@
-package com.atguigu.gmall;
+package com.hyman.dubbo;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

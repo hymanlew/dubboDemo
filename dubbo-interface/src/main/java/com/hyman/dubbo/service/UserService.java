@@ -1,8 +1,8 @@
-package com.atguigu.gmall.service;
+package com.hyman.dubbo.service;
 
 import java.util.List;
 
-import com.atguigu.gmall.bean.UserAddress;
+import com.hyman.dubbo.bean.UserAddress;
 
 /**
  * 用户服务
@@ -16,6 +16,6 @@ public interface UserService {
 	 * @param userId
 	 * @return
 	 */
-	public List<UserAddress> getUserAddressList(String userId);
+	List<UserAddress> getUserAddressList(String userId);
 
 }

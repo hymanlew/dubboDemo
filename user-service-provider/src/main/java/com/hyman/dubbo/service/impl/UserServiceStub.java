@@ -2,10 +2,10 @@ package com.hyman.dubbo.service.impl;
 
 import java.util.List;
 
+import com.hyman.dubbo.service.UserService;
 import org.springframework.util.StringUtils;
 
-import com.atguigu.gmall.bean.UserAddress;
-import com.atguigu.gmall.service.UserService;
+import com.hyman.dubbo.bean.UserAddress;
 
 public class UserServiceStub implements UserService {
 	
@@ -22,8 +22,7 @@ public class UserServiceStub implements UserService {
 	}
 
 
-	@Override
-	public List<UserAddress> getUserAddressList(String userId) {
+    public List<UserAddress> getUserAddressList(String userId) {
 		// TODO Auto-generated method stub
 		System.out.println("UserServiceStub.....");
 		if(!StringUtils.isEmpty(userId)) {

@@ -1,4 +1,4 @@
-package com.atguigu.gmall.controller;
+package com.hyman.dubbo.controller;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.atguigu.gmall.bean.UserAddress;
-import com.atguigu.gmall.service.OrderService;
+import com.hyman.dubbo.bean.UserAddress;
+import com.hyman.dubbo.service.OrderService;
 
 @Controller
 public class OrderController {

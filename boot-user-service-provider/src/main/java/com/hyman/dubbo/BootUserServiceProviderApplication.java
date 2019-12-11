@@ -1,4 +1,4 @@
-package com.atguigu.gmall;
+package com.hyman.dubbo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,7 +23,7 @@ import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
  */
 //@EnableDubbo //开启基于注解的dubbo功能
 //@ImportResource(locations="classpath:provider.xml")
-@EnableDubbo(scanBasePackages="com.atguigu.gmall")
+@EnableDubbo(scanBasePackages="com.hyman.dubbo")
 @EnableHystrix //开启服务容错
 @SpringBootApplication
 public class BootUserServiceProviderApplication {

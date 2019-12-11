@@ -1,4 +1,4 @@
-package com.atguigu.gmall.bean;
+package com.hyman.dubbo.bean;
 
 import java.io.Serializable;
 

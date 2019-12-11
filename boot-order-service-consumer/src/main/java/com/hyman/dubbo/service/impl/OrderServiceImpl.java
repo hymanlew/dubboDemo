@@ -1,4 +1,4 @@
-package com.atguigu.gmall.service.impl;
+package com.hyman.dubbo.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.atguigu.gmall.bean.UserAddress;
-import com.atguigu.gmall.service.OrderService;
-import com.atguigu.gmall.service.UserService;
+import com.hyman.dubbo.bean.UserAddress;
+import com.hyman.dubbo.service.OrderService;
+import com.hyman.dubbo.service.UserService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**

@@ -1,10 +1,10 @@
-package com.atguigu.gmall;
+package com.hyman.dubbo;
 
 import java.io.IOException;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.atguigu.gmall.service.OrderService;
+import com.hyman.dubbo.service.OrderService;
 
 public class MainApplication {
 	

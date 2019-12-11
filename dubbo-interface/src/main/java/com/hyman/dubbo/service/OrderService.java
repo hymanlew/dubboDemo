@@ -1,8 +1,8 @@
-package com.atguigu.gmall.service;
+package com.hyman.dubbo.service;
 
 import java.util.List;
 
-import com.atguigu.gmall.bean.UserAddress;
+import com.hyman.dubbo.bean.UserAddress;
 
 public interface OrderService {
 	
@@ -10,6 +10,6 @@ public interface OrderService {
 	 * 初始化订单
 	 * @param userId
 	 */
-	public List<UserAddress> initOrder(String userId);
+	List<UserAddress> initOrder(String userId);
 
 }
