@@ -36,6 +36,9 @@
 	监控中心配置。对应的配置类： org.apache.dubbo.config.MonitorConfig。
 	第一种，代表指定监控中心协议，如果 protocol="registry"，表示从注册中心发现监控中心地址，否则直连监控中心。默认值 dubbo。
 	第二种，代表直连监控中心服务器地址，address="10.20.130.230:12080"。没有默认值。
+
+	Simple Monitor 挂掉不会影响到 Consumer 和 Provider 之间的调用，所以用于生产环境不会有风险。
+	Simple Monitor 采用磁盘存储统计信息，请注意安装机器的磁盘限制，如果要集群，建议用mount共享磁盘。
 	-->
 	<dubbo:monitor protocol="registry"></dubbo:monitor>
 	<!-- <dubbo:monitor address="127.0.0.1:7070"></dubbo:monitor> -->
