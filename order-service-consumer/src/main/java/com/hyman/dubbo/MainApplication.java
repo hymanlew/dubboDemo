@@ -6,6 +6,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.hyman.dubbo.service.OrderService;
 
+/**
+ * 服务提供者测试类，测试配置文件是否正确（前提是 zookeper，dubbo-admin 控制台都已经启动）
+ */
 public class MainApplication {
 	
 	@SuppressWarnings("resource")

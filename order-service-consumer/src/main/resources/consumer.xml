@@ -7,8 +7,8 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd
 		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
-	<context:component-scan base-package="com.hyman.dubbo.service.impl"></context:component-scan>
 
+	<context:component-scan base-package="com.hyman.dubbo.service.impl"></context:component-scan>
 
 	<dubbo:application name="order-service-consumer"></dubbo:application>
 	
@@ -16,22 +16,27 @@
 	
 	<!--  配置本地存根-->
 	
-	<!--声明需要调用的远程服务的接口；生成远程服务代理  -->
+	<!-- 声明需要调用的远程服务的接口；生成远程服务代理。interface 指向服务提供者暴露的接口（名字必须相同）  -->
 	<!-- 
-		1）、精确优先 (方法级优先，接口级次之，全局配置再次之)
-		2）、消费者设置优先(如果级别一样，则消费方优先，提供方次之)
+		1、精确优先 (方法级优先，接口级次之，全局配置再次之)
+		2、消费者设置优先(如果级别一样，则消费方优先，提供方次之)
+
+		timeout="0"	默认是1000ms
+		retries=""	重试次数，不包含第一次调用，0代表不重试
+		幂等（设置重试次数）【查询、删除、修改】、非幂等（不能设置重试次数）【新增】
 	-->
-	<!-- timeout="0" 默认是1000ms-->
-	<!-- retries="":重试次数，不包含第一次调用，0代表不重试-->
-	<!-- 幂等（设置重试次数）【查询、删除、修改】、非幂等（不能设置重试次数）【新增】 -->
-	<dubbo:reference interface="com.hyman.dubbo.service.UserService"
-		id="userService" timeout="5000" retries="3" version="*">
+	<dubbo:reference interface="com.hyman.dubbo.service.UserService" id="userService" timeout="5000" retries="3" version="*">
 		<!-- <dubbo:method name="getUserAddressList" timeout="1000"></dubbo:method> -->
 	</dubbo:reference>
 		
 	<!-- 配置当前消费者的统一规则：所有的服务都不检查 -->
 	<dubbo:consumer check="false" timeout="5000"></dubbo:consumer>
 
+	<!--
+	监控中心配置。对应的配置类： org.apache.dubbo.config.MonitorConfig。
+	第一种，代表指定监控中心协议，如果 protocol="registry"，表示从注册中心发现监控中心地址，否则直连监控中心。默认值 dubbo。
+	第二种，代表直连监控中心服务器地址，address="10.20.130.230:12080"。没有默认值。
+	-->
 	<dubbo:monitor protocol="registry"></dubbo:monitor>
 	<!-- <dubbo:monitor address="127.0.0.1:7070"></dubbo:monitor> -->
 	

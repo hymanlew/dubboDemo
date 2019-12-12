@@ -1,30 +1,37 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.hyman.dubbodemo</groupId>
-	<artifactId>user-service-provider</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.hyman.dubbodemo</groupId>
+    <artifactId>user-service-provider</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.hyman.dubbodemo</groupId>
-			<artifactId>dubbo-interface</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>com.hyman.dubbodemo</groupId>
+            <artifactId>dubbo-interface</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
-		<!-- 引入dubbo -->
-		<!-- https://mvnrepository.com/artifact/com.alibaba/dubbo -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>dubbo</artifactId>
-			<version>2.6.2</version>
-		</dependency>
-		<!-- 注册中心使用的是zookeeper，引入操作zookeeper的客户端端 -->
-		<dependency>
-			<groupId>org.apache.curator</groupId>
-			<artifactId>curator-framework</artifactId>
-			<version>2.12.0</version>
-		</dependency>
+        <!-- 引入dubbo -->
+        <!-- https://mvnrepository.com/artifact/com.alibaba/dubbo -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>2.6.2</version>
+        </dependency>
 
-	</dependencies>
+        <!-- dubbo 2.6 以前的版本引入 zkclient 操作 zookeeper，dubbo 2.6 及以后的版本引入 curator 操作zookeeper -->
+        <!-- 注册中心使用的是zookeeper，引入操作zookeeper的客户端端 -->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <version>2.12.0</version>
+        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>com.101tec</groupId>-->
+        <!--<artifactId>zkclient</artifactId>-->
+        <!--<version>0.10</version>-->
+        <!--</dependency>-->
+
+    </dependencies>
 </project>
