@@ -1,0 +1,60 @@
+
+server:
+  port: 8080
+  tomcat:
+    access_log_enabled: true
+    basedir: target/tomcat
+    uri-encoding: UTF-8
+  servlet:
+    context-path: '/'
+
+# 开发期间模板引擎页面修改以后，要实时生效就要：1，禁用模板引擎的缓存。2，ctrl+f9：重新编译。
+spring:
+  thymeleaf:
+    enabled: true
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+
+  resources:
+    static-locations: classpath:/static/
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+
+#   连接池最大连接数（使用负值表示没有限制）
+    jedis:
+      pool:
+        max-active: 8
+        min-idle: 8
+
+#       连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1ms
+        max-idle: 8
+
+#   连接超时时间（毫秒）
+    timeout: 0
+
+  # 毫秒，秒，分，时，天
+  cache:
+    redis:
+      timeToLive: 1h
+
+
+# 指定全局日期解析的格式，默认是按照 / 的方式解析的。所以一般不用单独配置，应该直接在页面中说明。
+#  mvc:
+#    date-format: yyyy-MM-dd
+
+#logging:
+#  file:
+#    path: classpath:/logback-spring.xml
+
+# 所有的配置属性，参考文档：https://docs.spring.io/spring-boot/docs/1.5.9.RELEASE/reference/htmlsingle/#common-application-properties。
