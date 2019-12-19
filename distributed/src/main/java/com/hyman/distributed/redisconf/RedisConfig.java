@@ -70,9 +70,4 @@ public class RedisConfig {
         return configuration;
     }
 
-    @Bean
-    public ReactiveStringRedisTemplate reactiveRedisTemplate(ReactiveRedisConnectionFactory factory) {
-        return new ReactiveStringRedisTemplate(factory);
-    }
-
 }

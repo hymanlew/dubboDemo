@@ -1,6 +1,7 @@
 package com.hyman.distributed.lock;
 
 import com.hyman.distributed.redisconf.Logutil;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Transaction;
@@ -14,6 +15,7 @@ import java.util.UUID;
 /**
  * 分布式锁的简单实现代码
  */
+@Component
 public class DistributedLock {
 
     /**
@@ -65,13 +67,17 @@ public class DistributedLock {
                  * 使用其他值，抛出 异常 ： redis.clients.jedis.exceptions.JedisDataException : ERR syntax error
                  */
 
-                // 这个是 jedis 2.9.3 版本（旧版本）使用的方法。
+                // 这个是 jedis 2.9.3 版本（旧版本）使用的方法。当前版本是 3.1.0
                 //jedis.set("key","value","nx","ex",100);
 
+                /**
+                 * value需要使用一个唯一的值，这个值在解锁的时候需要判断是否一致，如果一致的话就进行解锁。这个也是官方推荐的方法。
+                 */
                 SetParams setParams = new SetParams();
                 setParams.nx();
                 setParams.ex(lockExpire);
                 String result = jedis.set(lockKey, identifier, setParams);
+
                 if ("OK".equals(result)) {
                     // 返回value值，用于释放锁时间确认
                     retIdentifier = identifier;
@@ -212,4 +218,5 @@ public class DistributedLock {
         //}
         //return retFlag;
     }
+
 }
