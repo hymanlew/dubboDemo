@@ -1,6 +1,6 @@
 package com.hyman.distributed.lock;
 
-import com.hyman.distributed.redisconf.Logutil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
@@ -8,6 +8,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 
+/**
+ * 分布式锁，使用 lua
+ */
+@Slf4j
 @Component
 public class DistributedLock2 {
 
@@ -36,7 +40,7 @@ public class DistributedLock2 {
              *
              * 引入 lua 脚本，放在和application.yml 同层目录下
              * DefaultRedisScript<List> redisScript = new DefaultRedisScript<List>();
-             * redisScript.setLocation(new ClassPathResource("test.lua"));
+             * redisScript.setLocation(new ClassPathResource("controller.lua"));
              * redisScript.setResultType(List.class);
              *
              * 运行lua脚本，keyList为传入的key值列表，需要加前缀，以确保在同一节点上，d为参数数组。
@@ -65,12 +69,12 @@ public class DistributedLock2 {
              */
             locked =redisTemplate.execute(lockScript, Collections.singletonList(key), uuid, millSeconds);
 
-            Logutil.logger.info("distributedLock.key{}: - uuid:{}: - timeToLock:{} - locked:{} - millSeconds:{}",
+            log.info("distributedLock.key{}: - uuid:{}: - timeToLock:{} - locked:{} - millSeconds:{}",
                     key, uuid, secondsToLock, locked, millSeconds);
 
         } catch (Exception e) {
 
-            Logutil.logger.error("error", e);
+            log.error("error", e);
         }
         return locked;
     }
@@ -78,7 +82,7 @@ public class DistributedLock2 {
     public void distributedUnlock(String key, String uuid) {
 
         Long unlocked = redisTemplate.execute(unlockScript, Collections.singletonList(key), uuid);
-        Logutil.logger.info("distributedLock.key{}: - uuid:{}: - unlocked:{}", key, uuid, unlocked);
+        log.info("distributedLock.key{}: - uuid:{}: - unlocked:{}", key, uuid, unlocked);
     }
 
 }

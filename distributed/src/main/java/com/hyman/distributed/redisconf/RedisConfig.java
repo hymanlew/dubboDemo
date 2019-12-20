@@ -1,14 +1,13 @@
 package com.hyman.distributed.redisconf;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -16,7 +15,7 @@ import redis.clients.jedis.JedisPoolConfig;
 import javax.annotation.Resource;
 import java.time.Duration;
 
-
+@Slf4j
 @Configuration
 @Component
 @EnableConfigurationProperties
@@ -40,7 +39,7 @@ public class RedisConfig {
      */
     @Bean
     public JedisPool redisPoolFactory() {
-        Logutil.logger.info("JedisPool init successful，host -> [{}]；port -> [{}]", host, port);
+        log.info("JedisPool init successful，host -> [{}]；port -> [{}]", host, port);
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(maxIdle);
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);

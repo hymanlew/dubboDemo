@@ -1,5 +1,5 @@
 
-# 分布式锁 lua
+# 分布式锁-加锁-lua
 
 local expire = tonumber(ARGV[2])
 local ret = redis.call('set', KEYS[1], ARGV[1], 'NX', 'PX', expire)
@@ -13,11 +13,3 @@ return false
 else
 return true
 end
-
-
-redis.call('del', 'result')
-if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1])
-else
-return 0
-end
-return "";

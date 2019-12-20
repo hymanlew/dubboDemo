@@ -1,5 +1,6 @@
 package com.hyman.distributed.redisconf;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -8,6 +9,7 @@ import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.scripting.ScriptSource;
 import org.springframework.scripting.support.ResourceScriptSource;
 
+@Slf4j
 @Configuration
 public class BeanConfiguration {
 
@@ -24,12 +26,12 @@ public class BeanConfiguration {
         RedisScript redisScript = null;
         try {
             ScriptSource scriptSource = new ResourceScriptSource(new ClassPathResource("/scripts/limit.lua"));
-            Logutil.logger.info("script:{}", scriptSource.getScriptAsString());
+            log.info("script:{}", scriptSource.getScriptAsString());
 
             redisScript = RedisScript.of(scriptSource.getScriptAsString(), Long.class);
 
         } catch (Exception e) {
-            Logutil.logger.error("error", e);
+            log.error("error", e);
         }
         return redisScript;
     }
@@ -43,7 +45,7 @@ public class BeanConfiguration {
             redisScript = RedisScript.of(scriptSource.getScriptAsString(), Boolean.class);
 
         } catch (Exception e) {
-            Logutil.logger.error("error" , e);
+            log.error("error" , e);
         }
         return redisScript;
     }
@@ -57,7 +59,7 @@ public class BeanConfiguration {
             redisScript = RedisScript.of(scriptSource.getScriptAsString(), Long.class);
 
         } catch (Exception e) {
-            Logutil.logger.error("error" , e);
+            log.error("error" , e);
         }
         return redisScript;
     }

@@ -1,24 +1,28 @@
-package com.hyman.distributed.test;
+package com.hyman.distributed.controller;
 
 import com.hyman.distributed.lock.DistributedLock2;
-import com.hyman.distributed.redisconf.Logutil;
+import com.hyman.distributed.lockconf.DistriLimitAnno;
 import com.hyman.distributed.redisconf.RestTemplateUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.nio.charset.Charset;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 本事例采用了 lua 脚本和 Redis 实现了锁和限流，但是真实使用的时候还需要多测试，另外如果此次Redis也是采用的单机实现方法，使
+ * 用集群的时候可能需要改造一下。
+ *
+ * 关于锁这块其实 Reids 自己也实现了 RedLock, java实现的版本 Redission。也有很多公司使用了，功能非常强大。各种场景下都用到了。
+ */
+@Slf4j
 @Controller
-public class Service2 {
+public class DistribService {
 
     @Autowired
     private DistributedLock2 lock2;
@@ -36,15 +40,15 @@ public class Service2 {
             locked = lock2.distributedLock(key, uuid, secondsToLock);
 
             if(locked) {
-                Logutil.logger.info("userId:{} is locked - uuid:{}", userId, uuid);
-                Logutil.logger.info("do business logic");
+                log.info("userId:{} is locked - uuid:{}", userId, uuid);
+                log.info("do business logic");
                 TimeUnit.MICROSECONDS.sleep(3000);
             } else {
-                Logutil.logger.info("userId:{} is not locked - uuid:{}", userId, uuid);
+                log.info("userId:{} is not locked - uuid:{}", userId, uuid);
             }
 
         } catch (Exception e) {
-            Logutil.logger.error("error", e);
+            log.error("error", e);
 
         } finally {
             if(locked) {
@@ -57,11 +61,12 @@ public class Service2 {
     /**
      * 测试方法，用于测试和输出结果, 使用100个线程，然后锁的时间设置10秒，controller里边需要休眠3秒模拟业务执行。
      */
+    @PostMapping("/distributedLockTest")
     public void distrubtedLock() {
 
         String url = "http://localhost:8080/distributedLock";
         String uuid = "abcdefg";
-        Logutil.logger.info("uuid:{}", uuid);
+        log.info("uuid:{}", uuid);
 
         String key = "redisLock";
         String secondsToLive = "10";
@@ -81,6 +86,19 @@ public class Service2 {
             }
             ).start();
         }
+    }
 
+    /**
+     * 将注解写到自定义的 controller 上，limit的大小为10，也就是10秒钟内限制10次访问。
+     * @param userId
+     * @return
+     */
+    @PostMapping("/distributedLimit")
+    @ResponseBody
+    @DistriLimitAnno(limitKey="limit", limit = 10)
+    public String distributedLimit(String userId) {
+
+        log.info(userId);
+        return "ok";
     }
 }

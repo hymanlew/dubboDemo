@@ -1,4 +1,4 @@
-package com.hyman.distributed.test;
+package com.hyman.distributed.controller;
 
 import com.hyman.distributed.lock.DistributedLock;
 import redis.clients.jedis.JedisPool;

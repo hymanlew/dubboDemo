@@ -1,20 +1,23 @@
 package com.hyman.distributed.lock;
 
-import com.hyman.distributed.redisconf.Logutil;
+import com.hyman.distributed.lockconf.ThreadUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.Transaction;
-import redis.clients.jedis.exceptions.JedisException;
 import redis.clients.jedis.params.SetParams;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 分布式锁的简单实现代码
  */
+@Slf4j
 @Component
 public class DistributedLock {
 
@@ -39,16 +42,31 @@ public class DistributedLock {
      * @return 锁标识
      */
     public String lockWithTimeout(String lockName, long acquireTimeout, long timeout) {
+
         Jedis jedis = null;
         String retIdentifier = null;
+
+        /**
+         * 分布式锁（基于 redis），可重入性：
+         * 锁必须保证其可重入性，即一个方法获取了一个标识为 identifier 的锁，此时这个方法调用了另外一个方法，也需要 identifier的锁，
+         * 此时由于当前线程已经有了这个锁，则不再获取直接进去，否则则会造成死锁。
+         *
+         * 可重入，并且此时已经获取到了一个相同的锁，则不再需要获取锁
+         */
+        if (ThreadUtils.getlockKey(lockName) != null) {
+            if (log.isTraceEnabled()) {
+                log.trace("[全局锁]当前已经获取到锁:" + lockName);
+            }
+            return "OK";
+        }
 
         try {
             // 获取连接
             jedis = jedisPool.getResource();
-            // 随机生成一个value
-            String identifier = UUID.randomUUID().toString();
             // 锁名，即key值
             String lockKey = "lock:" + lockName;
+            // 随机生成一个value，作为锁的值
+            String identifier = UUID.randomUUID().toString();
             // 超时时间，上锁后超过此时间则自动释放锁
             int lockExpire = (int) (timeout / 1000);
 
@@ -134,7 +152,7 @@ public class DistributedLock {
         Object result = jedis.eval(script, Collections.singletonList(lockKey), Collections.singletonList(identifier));
         // del 方法的返回值，是被删除 key 的数量
         if (!"1".equals(result)) {
-            Logutil.logger.error("锁释放失败" + lockKey);
+            log.error("锁释放失败" + lockKey);
             return false;
         }
         return true;
@@ -219,4 +237,108 @@ public class DistributedLock {
         //return retFlag;
     }
 
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
+    /**
+     * 加锁
+     * @param lockKey   商品id，作为锁
+     * @param value 当前时间+超时时间
+     * @return
+     */
+    public boolean lock(String lockKey, String value) {
+
+        boolean lock = false;
+        try {
+
+            /**
+             * redisTemplate.opsForValue();		//操作字符串
+             * redisTemplate.opsForHash();		//操作hash
+             * redisTemplate.opsForList();		//操作list
+             * redisTemplate.opsForSet();		//操作set
+             * redisTemplate.opsForZSet();		//操作有序set
+             */
+            //当值不存在时，则设置成功返回true
+            lock = redisTemplate.opsForValue().setIfAbsent(lockKey, value);
+            log.info("cancelCouponCode是否获取到锁：" + lock);
+
+            if (lock) {
+                //成功设置过期时间
+                redisTemplate.expire(lockKey, 1, TimeUnit.MINUTES);
+                return true;
+
+            } else {
+                /**
+                 * 如果过期时间被设置成功，返回1。
+                 * 如果设置失败或者key不存在，则返回0
+                 *
+                 * 在key上设置一个过期时间（timeout），一旦时间到了，这个key将会被自动删除。这种情况叫做 Redis 的不稳定性。
+                 * 一旦设置了过期时间，这个key只能被命令清除、删除或者重写其内容。包含 del、set、getset 以及所有的 *store 命令。
+                 * 这些命令只能改变key对应的value的存储值而不改变过期时间的设置。
+                 *
+                 * 举个例子，使用incr改变key对应的value、使用lpush添加一个新的元素到lists中、使用hset设置field对应value的值等等
+                 * 这些操作都不影响已经对key设置的过期时间的属性。
+                 *
+                 * 设置了过期时间的key依然可以使用persist命令重新持久化。
+                 * 如果key设置了过期时间，并且尚未被删除，使用rename命令重新命名后，该过期时间将转移到新的key上。事实上，rename命
+                 * 令重命名key后，原始的key对应属性全部发生转移。
+                 *
+                 * 如果调用expire或者pexpire时传给一个负值作为参数以及expireat或者pexpireat调用的时候时间戳已经过去，那么该key将
+                 * 直接被删除而不是等待过期。
+                 *
+                 * 刷新过期时间，对一个设置了过期时间的key仍然可以调用expire更新其过期时间。
+                 *
+                 * 新版本和低于2.1.3版本的区别，在2.1.3版本之前，如果设置时间触发了修改value的工作，则key将会被删除，这会影响主从
+                 * 复制，之后的版本已经做了修正。
+                 */
+
+                //避免死锁，且只让一个线程拿到锁
+                String currentValue = redisTemplate.opsForValue().get(lockKey);
+
+                //如果加锁的线程占用超时了，即虽然没过期，但是锁上面的时间已经超时了
+                if (!StringUtils.isEmpty(currentValue) && Long.parseLong(currentValue) < System.currentTimeMillis()) {
+
+                    //以下的操作会导致原来的锁，解锁异常
+                    //获取上一个锁的时间并设置新值，设置键的字符串值并返回其旧值
+                    String oldValues = redisTemplate.opsForValue().getAndSet(lockKey, value);
+                    redisTemplate.expire(lockKey, 1, TimeUnit.MINUTES);
+                    return true;
+                }
+                return false;
+            }
+
+        } catch (Exception e){
+            log.error(e.getMessage());
+
+        } finally {
+            if (lock) {
+                redisTemplate.delete(lockKey);
+                log.info("cancelCouponCode任务结束，释放锁!");
+                lock = true;
+            } else {
+                log.info("cancelCouponCode没有获取到锁，无需释放锁!");
+                lock = false;
+            }
+        }
+        return lock;
+    }
+
+
+    /**
+     * 解锁
+     * @param key
+     * @param value
+     */
+    public void unlock(String key, String value) {
+
+        try {
+            String currentValue = redisTemplate.opsForValue().get(key);
+            if (!StringUtils.isEmpty(currentValue) && currentValue.equals(value)) {
+                redisTemplate.opsForValue().getOperations().delete(key);
+            }
+        } catch (Exception e) {
+            log.error("『redis分布式锁』解锁异常，{}", e);
+        }
+    }
 }
