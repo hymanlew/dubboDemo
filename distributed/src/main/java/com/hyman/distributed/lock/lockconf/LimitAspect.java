@@ -1,4 +1,4 @@
-package com.hyman.distributed.lockconf;
+package com.hyman.distributed.lock.lockconf;
 
 import com.hyman.distributed.lock.DistributedLimit;
 import org.aspectj.lang.JoinPoint;

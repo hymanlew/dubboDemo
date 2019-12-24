@@ -1,4 +1,4 @@
-package com.hyman.distributed.lockconf;
+package com.hyman.distributed.lock.lockconf;
 
 import java.util.HashMap;
 import java.util.Map;

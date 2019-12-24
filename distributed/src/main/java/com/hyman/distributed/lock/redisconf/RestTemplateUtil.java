@@ -1,4 +1,4 @@
-package com.hyman.distributed.redisconf;
+package com.hyman.distributed.lock.redisconf;
 
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;

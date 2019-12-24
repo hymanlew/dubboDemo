@@ -1,4 +1,4 @@
-package com.hyman.distributed.lockconf;
+package com.hyman.distributed.lock.lockconf;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

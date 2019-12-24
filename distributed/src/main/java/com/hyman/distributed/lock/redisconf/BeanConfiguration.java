@@ -1,4 +1,4 @@
-package com.hyman.distributed.redisconf;
+package com.hyman.distributed.lock.redisconf;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

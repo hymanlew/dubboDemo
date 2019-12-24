@@ -1,4 +1,4 @@
-package com.hyman.distributed.lockconf;
+package com.hyman.distributed.lock.lockconf;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

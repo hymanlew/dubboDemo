@@ -1,6 +1,6 @@
 package com.hyman.distributed.lock;
 
-import com.hyman.distributed.lockconf.ThreadUtils;
+import com.hyman.distributed.lock.lockconf.ThreadUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

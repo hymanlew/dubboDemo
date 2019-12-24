@@ -1,8 +1,8 @@
-package com.hyman.distributed.controller;
+package com.hyman.distributed.lock.controller;
 
 import com.hyman.distributed.lock.DistributedLock2;
-import com.hyman.distributed.lockconf.DistriLimitAnno;
-import com.hyman.distributed.redisconf.RestTemplateUtil;
+import com.hyman.distributed.lock.lockconf.DistriLimitAnno;
+import com.hyman.distributed.lock.redisconf.RestTemplateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
