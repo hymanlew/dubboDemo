@@ -20,13 +20,19 @@ public class DBConstants {
     public static final String SECOND_SQL_SESSION_FACTORY = "secondSqlSessionFactory";
 
     /**
+     * sqlSessionTemplate
+     */
+    public static final String FIRST_SQL_SESSION_TEMPLATE = "firstSqlSessionTemplate";
+    public static final String SECOND_SQL_SESSION_TEMPLATE = "secondSqlSessionTemplate";
+
+    /**
      * mapper接口
      */
-    public static final String FIRST_MAPPER = "com.hyman.distributed.transaction.dao.first.mapper";
-    public static final String SECOND_MAPPER = "com.hyman.distributed.transaction.dao.second.mapper";
+    public static final String FIRST_MAPPER = "com.hyman.distributed.transaction.dao.first";
+    public static final String SECOND_MAPPER = "com.hyman.distributed.transaction.dao.second";
     /**
      * mapper.xml目录
      */
-    public static final String FIRST_MAPPER_XML = "classpath:first-mapper/*.xml";
-    public static final String SECOND_MAPPER_XML = "classpath:second-mapper/*.xml";
+    public static final String FIRST_MAPPER_XML = "classpath:mapper/*.xml";
+    public static final String SECOND_MAPPER_XML = "classpath:mapper/*.xml";
 }

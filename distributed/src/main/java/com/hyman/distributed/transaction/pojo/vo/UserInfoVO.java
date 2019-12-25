@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 public class UserInfoVO {
+
     private Integer id;
 
     private String name;

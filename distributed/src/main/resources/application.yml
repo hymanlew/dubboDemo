@@ -24,6 +24,11 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false
+
+  aop:
+    proxy-target-class: true
 
   redis:
     database: 0
@@ -35,7 +40,6 @@ spring:
       pool:
         max-active: 8
         min-idle: 8
-
 #       连接池最大阻塞等待时间（使用负值表示没有限制）
         max-wait: -1ms
         max-idle: 8
@@ -48,6 +52,10 @@ spring:
     redis:
       timeToLive: 1h
 
+
+# jta相关参数配置，如果在JTA环境中，仍然希望使用本地事务，可以设置spring.jta.enabled属性为false以禁用JTA自动配置。
+  jta:
+    enabled: true
 
 # 多数据源配置，注意，如果使用 Druid 的分布式驱动，暂不支持MySql8.0+
   datasource:
@@ -103,10 +111,48 @@ spring:
         filters: stat,wall,slf4j
         connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
 
+  # jwt配置
+  jwt:
+    # 加密secret，签名密钥
+    secret: sS8yq0!gukLUZ^r$UQgJ2Cd&@3DkT%J96A3XScNwYE*1^SkoV
+    # 默认过期时间2小时，单位：秒
+    expire-second: 7200
+    # JWT加密的密匙
+    datakey: hymanSalt
+
 
 # 指定全局日期解析的格式，默认是按照 / 的方式解析的。所以一般不用单独配置，应该直接在页面中说明。
 #  mvc:
 #    date-format: yyyy-MM-dd
+
+
+## mybatis-plus config ###
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  # 实体扫描，多个 package 用逗号或者分号分隔
+  typeAliasesPackage: com.hyman.distributed.transaction.pojo.entity
+  global-config:
+    # 数据库相关配置
+    db-config:
+      # 主键类型  AUTO:"数据库ID自增"，INPUT:"用户输入ID"，ID_WORKER:"全局唯一ID (数字类型唯一ID)"， UUID:"全局唯一ID UUID";
+      id-type: UUID
+      # 字段策略 IGNORED:"忽略判断"，NOT_NULL:"非 NULL 判断"，NOT_EMPTY:"非空判断"
+      field-strategy: not_empty
+      # 驼峰下划线转换
+      column-underline: true
+      # 数据库大写下划线转换
+      #capital-mode: true
+      # 逻辑删除配置
+      #logic-delete-value: 0
+      #logic-not-delete-value: 1
+      #db-type: h2
+    # 刷新mapper 调试神器
+    #refresh: true
+  # 原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+
 
 #logging:
 #  file:

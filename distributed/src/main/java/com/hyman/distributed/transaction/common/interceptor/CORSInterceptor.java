@@ -7,10 +7,12 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 设置跨域允许
+ *
  * @author hyman
  * @date 2019/3/7 3:17 PM
  */
 public class CORSInterceptor implements HandlerInterceptor {
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -26,7 +28,6 @@ public class CORSInterceptor implements HandlerInterceptor {
             response.setHeader("Access-Control-Allow-Headers", "content-type, Authorization, Access-Token");
             response.setHeader("Access-Control-Allow-Credentials","true");
             response.setStatus(204);
-
             return false;
         }
 

@@ -24,8 +24,10 @@ public class WebConfiguration implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+
         //跨域
         registry.addInterceptor(new CORSInterceptor()).addPathPatterns("/**");
+
         //token拦截配置
         registry.addInterceptor(tokenInterceptor()).addPathPatterns("/**")
                 .excludePathPatterns("/users/login")

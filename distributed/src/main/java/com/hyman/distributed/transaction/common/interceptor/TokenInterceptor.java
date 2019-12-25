@@ -12,6 +12,7 @@ import java.util.Map;
 
 /**
  * token 拦截器
+ *
  * @author hyman
  * @date 2019/10/6 10:16 上午
  */
@@ -25,18 +26,17 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         // 获取请求头token
         String token = request.getHeader("Access-Token");
-
         if (StringUtils.isBlank(token)) {
             throw new TokenException();
         }
-        //获取token的数据
-        Map tokenData = jwtUtil.getJWTData(token);
 
+        // 获取token的数据
+        Map tokenData = jwtUtil.getJWTData(token);
         if (tokenData == null) {
             throw new TokenException();
         }
 
-        //存储数据逻辑省略...
+        // 验证 token 逻辑省略...
 
         return true;
     }

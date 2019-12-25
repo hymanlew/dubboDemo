@@ -1,7 +1,10 @@
 package com.hyman.distributed;
 
+import com.hyman.distributed.transaction.config.datasource.FirstDataSourceConfiguration;
+import com.hyman.distributed.transaction.config.datasource.SecondDataSourceProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 /**
  * 分布式锁三种方案的比较：
@@ -23,7 +26,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * 在分布式环境中，对资源进行上锁有时候是很重要的，比如抢购某一资源，这时候使用分布式锁就可以很好地控制资源。当然在具体使用中，还需要
  * 考虑很多因素，比如超时时间的选取，获取锁时间的选取对并发量都有很大的影响。
  */
+
 @SpringBootApplication
+@EnableConfigurationProperties(value = {FirstDataSourceConfiguration.class, SecondDataSourceProperties.class})
 public class DistributedApplication {
 
     public static void main(String[] args) {

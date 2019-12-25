@@ -4,11 +4,13 @@ import lombok.Getter;
 
 /**
  * 返回结果
+ *
  * @author hyman
  * @date 2019/10/3 3:44 下午
  */
 @Getter
 public enum ResultEnum {
+
     SUCCESS(200, "SUCCESS"),
 
     TOKEN_ERROR(1001, "会话已过期，请重新登录"),

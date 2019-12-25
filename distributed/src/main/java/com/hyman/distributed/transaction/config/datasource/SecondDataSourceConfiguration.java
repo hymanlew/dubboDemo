@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.hyman.distributed.transaction.common.constant.DBConstants;
 import com.mysql.cj.jdbc.MysqlXADataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class SecondDataSourceConfiguration {
      * @return
      */
     @Bean(DBConstants.SECOND_DATA_SOURCE)
-    public DataSource secondDataSource() {
+    public DataSource secondDataSource() throws Exception{
 
         // 使用 Druid 的分布式驱动，暂时不支持 mysql8 以上的版本
         //DruidXADataSource druidXADataSource = new DruidXADataSource();
@@ -43,6 +44,7 @@ public class SecondDataSourceConfiguration {
         mysqlXaDataSource.setUrl(secondDataSourceProperties.getUrl());
         mysqlXaDataSource.setPassword(secondDataSourceProperties.getPassword());
         mysqlXaDataSource.setUser(secondDataSourceProperties.getUsername());
+        mysqlXaDataSource.setPinGlobalTxToPhysicalConnection(true);
 
         AtomikosDataSourceBean xaDataSource = new AtomikosDataSourceBean();
         xaDataSource.setXaDataSource(mysqlXaDataSource);
@@ -75,5 +77,11 @@ public class SecondDataSourceConfiguration {
         //设置 mapper.xml 文件的路径
         bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(DBConstants.SECOND_MAPPER_XML));
         return bean.getObject();
+    }
+
+    @Bean(DBConstants.SECOND_SQL_SESSION_TEMPLATE)
+    public SqlSessionTemplate testSqlSessionTemplate(
+            @Qualifier(DBConstants.SECOND_SQL_SESSION_FACTORY) SqlSessionFactory sqlSessionFactory) throws Exception {
+        return new SqlSessionTemplate(sqlSessionFactory);
     }
 }

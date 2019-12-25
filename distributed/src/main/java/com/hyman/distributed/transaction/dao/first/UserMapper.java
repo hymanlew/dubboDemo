@@ -1,12 +1,10 @@
-package com.hyman.distributed.transaction.dao.first.mapper;
+package com.hyman.distributed.transaction.dao.first;
 
-import com.hyman.distributed.transaction.pojo.entity.first.User;
+import com.hyman.distributed.transaction.pojo.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
- * <p>
- *  Mapper 接口
- * </p>
+ * Mapper 接口
  *
  * @author hyman
  * @since 2019-10-05
