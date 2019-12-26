@@ -78,6 +78,8 @@ public class JWTUtil {
     @Value("${spring.jwt.datakey}")
     private String datakey;
 
+    private static Map IDmap = new HashMap();
+
     /**
      * 创建token
      * @param map
@@ -103,6 +105,7 @@ public class JWTUtil {
 
         // 对主识别码进行单独加密
         String id = map.get("id").toString();
+        IDmap.put(id, "");
         id = AESSecretUtil.encryptToStr(id, datakey);
         map.put("id", id);
 
@@ -127,19 +130,12 @@ public class JWTUtil {
 
         try {
             Map map = getJWTData(jwtToken);
-            //解密客户编号
-            String decryptUserId = AESSecretUtil.decryptToStr((String)map.get("id"), datakey);
-            //retMap = new HashMap<>();
-            ////加密后的客户编号
-            //retMap.put("userId", decryptUserId);
-            ////客户名称
-            //retMap.put("userName", claims.get("userName"));
-            ////客户端浏览器信息
-            //retMap.put("userAgent", claims.get("userAgent"));
-            ////刷新JWT
-            //retMap.put("freshToken", generateJWT(decryptUserId, (String)claims.get("userName"), (String)claims.get("userAgent"), (String)claims.get("domainName")));
+            //解密编号
+            String decryptId = AESSecretUtil.decryptToStr((String)map.get("id"), datakey);
 
-            return true;
+            if(IDmap.containsKey(decryptId)){
+                return true;
+            }
         } catch (ExpiredJwtException var3) {
             log.error(var3.getMessage(), var3);
         } catch (MalformedJwtException var4) {
@@ -149,7 +145,6 @@ public class JWTUtil {
         } catch (Exception var6) {
             log.error(var6.getMessage(), var6);
         }
-
         return false;
     }
 
