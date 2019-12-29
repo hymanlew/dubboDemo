@@ -17,30 +17,35 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
  * 		1）、导入dubbo依赖（2.6.2）\操作zookeeper的客户端(curator)
  * 		2）、配置服务提供者
  * 
- * 2、让服务消费者去注册中心订阅服务提供者的服务地址
- * @author lfy
+ * 2、让服务消费者去注册中心订阅服务提供者的服务地址，dubbo.registry.address。
  *
+ * @author hyman
+ * @date 2019/12/01
  */
 @Service
 public class OrderServiceImpl implements OrderService {
 
+    /**
+     * 使用注解声明需要调用的远程服务的接口；生成远程服务代理。名字必须与服务提供者暴露的接口名称相同。
+     * dubbo直连
+     */
 	//@Autowired
-	@Reference(loadbalance="random",timeout=1000) //dubbo直连
+	@Reference(loadbalance="random", timeout=1000)
 	UserService userService;
 	
 	@HystrixCommand(fallbackMethod="hello")
 	@Override
 	public List<UserAddress> initOrder(String userId) {
-		// TODO Auto-generated method stub
+
 		System.out.println("用户id："+userId);
-		//1、查询用户的收货地址
+
+		// 查询用户的收货地址
 		List<UserAddress> addressList = userService.getUserAddressList(userId);
 		return addressList;
 	}
 	
 	
 	public List<UserAddress> hello(String userId) {
-		// TODO Auto-generated method stub
 	
 		return Arrays.asList(new UserAddress(10, "测试地址", "1", "测试", "测试", "Y"));
 	}

@@ -12,7 +12,7 @@ import com.hyman.dubbo.service.UserService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**
- * 暴露服务
+ * 暴露服务，service 注解使用 dubbo 的，其作用就是代替了在 xml 中直接配置暴露的服务。
  */
 @Service
 @Component

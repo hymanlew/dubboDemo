@@ -18,14 +18,19 @@ package com.hyman.dubbo;
 public class Instruction {
 
     /**
-     * dubbo 项目配置：
+     * Dubbo 的属性配置：
+     * 如果应用很简单（例如不需要多注册中心或多协议，并且需要在spring容器中共享配置），那么可以直接使用 dubbo.properties 或者
+     * boot 自带的 application.properties 作为默认配置。
+     * Dubbo 可以自动加载 classpath 根目录下的 dubbo.properties，但也可以使用 JVM 参数来指定路径：-Ddubbo.properties.file=xxx.properties。
      *
-     * 将服务提供者注册到注册中心（暴露服务）：
-     * 1，导入dubbo依赖（2.6.2）\操作zookeeper的客户端(curator)
-     * 2，配置服务提供者 xml 文件
+     * 重写与优先级，优先级从高到低：
+     * 1，JVM -D参数，当你部署或者启动应用时，它可以轻易地重写配置。比如改变 dubbo 协议端口：-Ddubbo.protocol.port=20881。
+     * 2，XML, XML中的当前配置会重写 dubbo.properties 中的配置。
+     * 3，Properties，默认配置，仅仅作用于以上两者没有配置时。
      *
-     * 2、让服务消费者去注册中心订阅服务提供者的服务地址
-     * @author lfy
+     * 如果在 classpath 下有超过一个dubbo.properties文件，比如两个jar包都各自包含了dubbo.properties，dubbo将随机选择一个加
+     * 载，并且打印错误日志。
      *
+     * 如果 id没有在protocol中配置，将使用name作为默认属性。
      */
 }

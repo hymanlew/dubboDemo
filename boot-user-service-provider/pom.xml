@@ -35,6 +35,8 @@
 			<artifactId>dubbo-interface</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+
+		<!-- 导入 dubbo-starter 依赖 -->
 		<dependency>
 			<groupId>com.alibaba.boot</groupId>
 			<artifactId>dubbo-spring-boot-starter</artifactId>
