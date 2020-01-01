@@ -25,7 +25,7 @@ public class Instruction {
      *
      * 重写与优先级，优先级从高到低：
      * 1，JVM -D参数，当你部署或者启动应用时，它可以轻易地重写配置。比如改变 dubbo 协议端口：-Ddubbo.protocol.port=20881。
-     * 2，XML, XML中的当前配置会重写 dubbo.properties 中的配置。
+     * 2，XML, XML中（等同于 boot 默认的 properties 文件）的当前配置会重写 dubbo.properties 中的配置。
      * 3，Properties，默认配置，仅仅作用于以上两者没有配置时。
      *
      * 如果在 classpath 下有超过一个dubbo.properties文件，比如两个jar包都各自包含了dubbo.properties，dubbo将随机选择一个加

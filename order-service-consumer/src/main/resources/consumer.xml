@@ -2,6 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
@@ -16,21 +17,36 @@
 	
 	<!--  配置本地存根-->
 	
-	<!-- 声明需要调用的远程服务的接口；生成远程服务代理。interface 指向服务提供者暴露的接口（名字必须相同）  -->
-	<!-- 
-		1、精确优先 (方法级优先，接口级次之，全局配置再次之)
-		2、消费者设置优先(如果级别一样，则消费方优先，提供方次之)
+	<!--
+		声明需要调用的远程服务的接口；生成远程服务代理。interface 指向服务提供者暴露的接口（名字必须相同）。
+		引用缺省是延迟初始化的，只有引用被注入到其它 Bean，或被 getBean() 获取，才会初始化。如果需要饥饿加载，即没有人引用也立
+		即生成动态代理，可以配置：<dubbo:reference ... init="true" />
+	-->
+	<!--
+		不同粒度配置的覆盖关系（即配置的查找顺序），以 timeout 为例（其它 retries, loadbalance, actives 等类似）：
+		1、精确优先 (方法级优先，接口级次之，全局配置再次之)。
+		2、消费者设置优先(如果级别一样，则消费方优先，提供方次之)。
+		3、reference:method > service:method，reference > service，consumer > provider。
 
-		timeout="0"	默认是1000ms
+		其中服务提供方配置，通过 URL 经由注册中心传递给消费方。（建议由服务提供方设置超时，因为一个方法需要执行多长时间，服务提
+		供方更清楚，如果一个消费方同时引用多个服务，就不需要关心每个服务的超时设置）。
+
+		timeout="0"	默认是 1000ms
 		retries=""	重试次数，不包含第一次调用，0代表不重试
 		幂等（设置重试次数）【查询、删除、修改】、非幂等（不能设置重试次数）【新增】
+
+		另外可以设置 check="false"，即关闭某个服务的启动时检查 (没有提供者时报错)。
 	-->
 	<dubbo:reference interface="com.hyman.dubbo.service.UserService" id="userService" timeout="5000" retries="3" version="*">
 		<!-- <dubbo:method name="getUserAddressList" timeout="1000"></dubbo:method> -->
 	</dubbo:reference>
 		
-	<!-- 配置当前消费者的统一规则：所有的服务都不检查 -->
-	<dubbo:consumer check="false" timeout="5000"></dubbo:consumer>
+	<!-- 配置当前消费者的统一规则：关闭所有服务的启动时检查 (没有提供者时报错) -->
+	<!--<dubbo:consumer check="false" timeout="5000"></dubbo:consumer>-->
+
+	<!-- 关闭注册中心启动时检查 (注册订阅失败时报错) -->
+	<!--<dubbo:registry check="false" />-->
+
 
 	<!--
 	监控中心配置。对应的配置类： org.apache.dubbo.config.MonitorConfig。

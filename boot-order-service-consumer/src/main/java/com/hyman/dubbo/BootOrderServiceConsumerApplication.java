@@ -6,7 +6,7 @@ import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 
 import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 
-@EnableDubbo
+@EnableDubbo(scanBasePackages="com.hyman.dubbo")
 @EnableHystrix
 @SpringBootApplication
 public class BootOrderServiceConsumerApplication {

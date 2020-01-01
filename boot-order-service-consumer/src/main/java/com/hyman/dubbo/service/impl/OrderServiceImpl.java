@@ -26,8 +26,8 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 public class OrderServiceImpl implements OrderService {
 
     /**
-     * 使用注解声明需要调用的远程服务的接口；生成远程服务代理。名字必须与服务提供者暴露的接口名称相同。
-     * dubbo直连
+     * 使用注解声明需要调用的远程服务的接口；生成远程服务代理。名字必须与服务提供者暴露的接口名称相同。使用 dubbo 直连。
+	 * 同时还可以设置 check = false，关闭某个服务的启动时检查 (没有提供者时报错)。
      */
 	//@Autowired
 	@Reference(loadbalance="random", timeout=1000)

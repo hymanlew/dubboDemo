@@ -10,7 +10,6 @@ import com.hyman.dubbo.bean.UserAddress;
 public class UserServiceStub implements UserService {
 	
 	private final UserService userService;
-	
 
 	/**
 	 * 传入的是userService远程的代理对象
@@ -23,7 +22,7 @@ public class UserServiceStub implements UserService {
 
 
     public List<UserAddress> getUserAddressList(String userId) {
-		// TODO Auto-generated method stub
+
 		System.out.println("UserServiceStub.....");
 		if(!StringUtils.isEmpty(userId)) {
 			return userService.getUserAddressList(userId);
