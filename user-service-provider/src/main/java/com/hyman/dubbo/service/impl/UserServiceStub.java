@@ -23,7 +23,7 @@ public class UserServiceStub implements UserService {
 
     public List<UserAddress> getUserAddressList(String userId) {
 
-		System.out.println("UserServiceStub.....");
+		System.out.println("UserService.....Stub....");
 		if(!StringUtils.isEmpty(userId)) {
 			return userService.getUserAddressList(userId);
 		}

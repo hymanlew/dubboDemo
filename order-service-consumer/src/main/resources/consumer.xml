@@ -32,21 +32,33 @@
 		供方更清楚，如果一个消费方同时引用多个服务，就不需要关心每个服务的超时设置）。
 
 		timeout="0"	默认是 1000ms
-		retries=""	重试次数，不包含第一次调用，0代表不重试
-		幂等（设置重试次数）【查询、删除、修改】、非幂等（不能设置重试次数）【新增】
+		retries=""	重试次数，不包含第一次调用，0代表不重试。并且如果有多个提供方，则会在重试次数内在这些提供方之间进行切换调用。
+		幂等方法可以设置重试次数（查询、删除、修改）、非幂等方法不能设置重试次数（新增）。
 
 		另外可以设置 check="false"，即关闭某个服务的启动时检查 (没有提供者时报错)。
 	-->
 	<dubbo:reference interface="com.hyman.dubbo.service.UserService" id="userService" timeout="5000" retries="3" version="*">
 		<!-- <dubbo:method name="getUserAddressList" timeout="1000"></dubbo:method> -->
 	</dubbo:reference>
-		
+
 	<!-- 配置当前消费者的统一规则：关闭所有服务的启动时检查 (没有提供者时报错) -->
 	<!--<dubbo:consumer check="false" timeout="5000"></dubbo:consumer>-->
 
 	<!-- 关闭注册中心启动时检查 (注册订阅失败时报错) -->
 	<!--<dubbo:registry check="false" />-->
 
+	<!--
+	多版本：
+	当一个接口的实现，出现不兼容升级时，可以用版本号过渡，版本号不同的服务相互间不引用（消费方调用时，可以指定版本进行调用）。
+	可以按照以下的步骤进行版本迁移：
+	在低压力时间段，先升级一半提供者为新版本，再将所有消费者升级为新版本，然后将剩下的一半提供者升级为新版本。类似于灰度发布。
+
+	老版本服务提供者配置：<dubbo:service interface="com.foo.BarService" version="1.0.0" />
+	新版本服务提供者配置：<dubbo:service interface="com.foo.BarService" version="2.0.0" />
+	老版本服务消费者配置：<dubbo:reference id="barService" interface="com.foo.BarService" version="1.0.0" />
+	新版本服务消费者配置：<dubbo:reference id="barService" interface="com.foo.BarService" version="2.0.0" />
+	如果不需要区分版本，可以配置：<dubbo:reference id="barService" interface="com.foo.BarService" version="*" />
+	-->
 
 	<!--
 	监控中心配置。对应的配置类： org.apache.dubbo.config.MonitorConfig。
