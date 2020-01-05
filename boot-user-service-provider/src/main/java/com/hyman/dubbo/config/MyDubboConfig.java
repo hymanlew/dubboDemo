@@ -56,12 +56,12 @@ public class MyDubboConfig {
 		serviceConfig.setRef(userService);
 		serviceConfig.setVersion("1.0.0");
 		
-		//配置每一个method的信息
+		// 配置每一个method的信息
 		MethodConfig methodConfig = new MethodConfig();
 		methodConfig.setName("getUserAddressList");
 		methodConfig.setTimeout(1000);
 		
-		//将method的设置关联到service配置中
+		// 将method的设置关联到service配置中
 		List<MethodConfig> methods = new ArrayList<>();
 		methods.add(methodConfig);
 		serviceConfig.setMethods(methods);
