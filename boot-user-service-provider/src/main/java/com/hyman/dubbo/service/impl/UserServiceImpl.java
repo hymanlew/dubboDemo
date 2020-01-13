@@ -1,16 +1,14 @@
 package com.hyman.dubbo.service.impl;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import org.springframework.stereotype.Component;
-
-import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.hyman.dubbo.bean.UserAddress;
 import com.hyman.dubbo.service.UserService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 暴露服务，service 注解使用 dubbo 的，其作用就是代替了在 xml 中直接配置暴露的服务。

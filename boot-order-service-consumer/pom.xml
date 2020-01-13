@@ -30,7 +30,7 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<!-- 导入 dubbo-starter 依赖 -->
+		<!-- 导入 dubbo-starter 依赖，已经自动引入了操作 zookeeper 的客户端 curator -->
 		<dependency>
 			<groupId>com.alibaba.boot</groupId>
 			<artifactId>dubbo-spring-boot-starter</artifactId>
