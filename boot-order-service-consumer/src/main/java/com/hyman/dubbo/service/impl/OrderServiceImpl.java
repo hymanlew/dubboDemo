@@ -3,8 +3,8 @@ package com.hyman.dubbo.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.hyman.dubbo.bean.UserAddress;
